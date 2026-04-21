@@ -2,22 +2,39 @@
     <!-- Base application theme. -->
     <style name="Theme.StorytMakerUi" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/black</item>
-        <item name="colorPrimaryVariant">@color/black</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimary">@android:color/white</item>
+        <item name="colorPrimaryVariant">@android:color/white</item>
+        <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/black</item>
-        <item name="colorSecondaryVariant">@color/black</item>
-        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorSecondary">@android:color/white</item>
+        <item name="colorSecondaryVariant">@android:color/white</item>
+        <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/white</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        
+        <!-- Стиль для обычных кнопок (белые с черной обводкой) -->
+        <item name="buttonStyle">@style/Widget.App.Button.Default</item>
+    </style>
+    
+    <!-- Стиль для обычных кнопок (белые с черной обводкой) -->
+    <style name="Widget.App.Button.Default" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="strokeColor">@color/black</item>
     </style>
     
     <!-- Стиль для кнопки регистрации -->
     <style name="Widget.App.Button.Registration" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="backgroundTint">#F7EDE8</item>
         <item name="android:textColor">@color/black</item>
+        <item name="strokeColor">@android:color/transparent</item>
+    </style>
+    
+    <!-- Стиль для черной кнопки (Account) -->
+    <style name="Widget.App.Button.Black" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/black</item>
+        <item name="android:textColor">@color/white</item>
         <item name="strokeColor">@android:color/transparent</item>
     </style>
 </resources>

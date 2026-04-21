@@ -7,7 +7,9 @@ public class StoryResponse {
     private String title;
     private String description;
     private int authorId;
+    private String authorUsername;
     private double rating;
+    private int chapterCount;
     private String createdAt;
 
     public StoryResponse() {}
@@ -44,12 +46,28 @@ public class StoryResponse {
         this.authorId = authorId;
     }
 
+    public String getAuthorUsername() {
+        return authorUsername;
+    }
+
+    public void setAuthorUsername(String authorUsername) {
+        this.authorUsername = authorUsername;
+    }
+
     public double getRating() {
         return rating;
     }
 
     public void setRating(double rating) {
         this.rating = rating;
+    }
+
+    public int getChapterCount() {
+        return chapterCount;
+    }
+
+    public void setChapterCount(int chapterCount) {
+        this.chapterCount = chapterCount;
     }
 
     public String getCreatedAt() {

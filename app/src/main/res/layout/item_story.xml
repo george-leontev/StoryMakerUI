@@ -1,47 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    app:cardElevation="4dp"
-    app:cardCornerRadius="8dp">
+    android:background="@drawable/auth_form_background"
+    android:orientation="vertical"
+    android:padding="24dp">
 
-    <LinearLayout
+    <!-- Название истории цветом #CD4631 -->
+    <TextView
+        android:id="@+id/tvStoryTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#CD4631"
+        android:text="Заголовок истории"
+        android:maxLines="2"
+        android:ellipsize="end"
+        style="@style/Font_MontserratAlternates" />
 
-        <TextView
-            android:id="@+id/tvStoryTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:text="Заголовок истории"
-            android:maxLines="2"
-            android:ellipsize="end" />
+    <!-- Описание истории размером 12sp и цветом #4D4D4D -->
+    <TextView
+        android:id="@+id/tvStoryDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:textSize="14sp"
+        android:textColor="#4D4D4D"
+        android:text="Описание истории..."
+        android:maxLines="3"
+        android:ellipsize="end"
+        style="@style/Font_MontserratAlternates" />
 
-        <TextView
-            android:id="@+id/tvStoryDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:textSize="14sp"
-            android:text="Описание истории..."
-            android:maxLines="3"
-            android:ellipsize="end" />
+    <!-- Разделитель -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:background="#E0E0E0" />
 
-        <TextView
-            android:id="@+id/tvStoryAuthor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:textSize="12sp"
-            android:textColor="#666666"
-            android:text="Автор: ..." />
+    <!-- Автор -->
+    <TextView
+        android:id="@+id/tvStoryAuthor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="#333333"
+        android:textStyle="bold"
+        android:text="Автор: ..." />
 
-    </LinearLayout>
+    <!-- Рейтинг -->
+    <TextView
+        android:id="@+id/tvStoryRating"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textSize="14sp"
+        android:textColor="#333333"
+        android:text="Рейтинг: 0.0" />
 
-</androidx.cardview.widget.CardView>
+    <!-- Количество глав -->
+    <TextView
+        android:id="@+id/tvStoryChapters"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textSize="14sp"
+        android:textColor="#333333"
+        android:text="Глав: 0" />
+
+    <!-- Дата создания -->
+    <TextView
+        android:id="@+id/tvStoryCreatedAt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textSize="12sp"
+        android:textColor="#666666"
+        android:text="Создано: ..." />
+
+</LinearLayout>
