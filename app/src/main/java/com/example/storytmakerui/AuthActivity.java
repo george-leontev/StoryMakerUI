@@ -50,7 +50,7 @@ public class AuthActivity extends AppCompatActivity {
 
             // Блокируем кнопку
             btnLogin.setEnabled(false);
-            btnLogin.setText("Вход...");
+            btnLogin.setText("Logging In...");
 
             // Запускаем запрос в фоновом потоке
             executor.execute(() -> {
@@ -79,8 +79,8 @@ public class AuthActivity extends AppCompatActivity {
 
         // Обработчик кнопки "Registration"
         btnRegistration.setOnClickListener(v -> {
-            Toast.makeText(this, "Переход к регистрации", Toast.LENGTH_SHORT).show();
-            // TODO: Реализовать переход к экрану регистрации
+            startActivity(new Intent(AuthActivity.this, RegistrationActivity.class));
+            finish();
         });
     }
 

@@ -12,9 +12,6 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/white</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
-        
-        <!-- Стиль для кнопок по умолчанию -->
-        <item name="buttonStyle">@style/Widget.MaterialComponents.Button</item>
     </style>
     
     <!-- Стиль для кнопки регистрации -->
