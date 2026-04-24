@@ -1,24 +1,230 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/white"
     tools:context=".RegistrationActivity">
 
-    <Button
-        android:id="@+id/btnAuth"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Authorization"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:paddingStart="24dp"
-        android:paddingEnd="24dp"
-        android:layout_gravity="end"
-        android:layout_marginBottom="16dp"
-        style="@style/Widget.App.Button.Registration" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
 
+        <!-- Верхняя часть с логотипом и заголовками -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="start"
+                android:layout_marginBottom="32dp">
+
+                <ImageView
+                    android:id="@+id/ivAppIcon"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/app_icon"
+                    android:contentDescription="@string/app_name" />
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp">
+
+                    <TextView
+                        android:id="@+id/tvWelcome"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Join the portal"
+                        android:textSize="32sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        style="@style/Font_JostLight" />
+
+                    <ImageView
+                        android:id="@+id/ivSparkle"
+                        android:layout_width="46dp"
+                        android:layout_height="46dp"
+                        android:src="@drawable/sparkle"
+                        android:contentDescription="sparkle"
+                        android:layout_marginStart="288dp"
+                        android:layout_marginTop="-15dp" />
+
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/tvWhere"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Create your account to start."
+                    android:textSize="32sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="4dp"
+                    style="@style/Font_Jomhuria" />
+
+            </LinearLayout>
+
+            <!-- Форма регистрации -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/auth_form_background"
+                android:padding="24dp">
+
+                <TextView
+                    android:id="@+id/tvRegTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Registration"
+                    android:textColor="@color/black"
+                    android:textSize="28sp"
+                    android:textStyle="bold"
+                    style="@style/Font_MontserratAlternates" />
+
+                <!-- Имя пользователя -->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="68dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="8dp">
+
+                    <ImageView
+                        android:id="@+id/ivStar"
+                        android:layout_width="68dp"
+                        android:layout_height="68dp"
+                        android:src="@drawable/star"
+                        android:contentDescription="star"
+                        android:layout_gravity="end|top" />
+
+                    <TextView
+                        android:id="@+id/tvUsernameLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Username:"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        style="@style/Font_MontserratAlternates"
+                        android:layout_gravity="start|bottom" />
+
+                </FrameLayout>
+
+                <EditText
+                    android:id="@+id/etUsername"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:hint="Choose a username"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:padding="16dp"
+                    android:background="@drawable/edit_text_background"
+                    android:textColor="@color/black"
+                    android:textColorHint="#9E9E9E"
+                    android:layout_marginBottom="16dp"
+                    style="@style/Font_MontserratAlternates" />
+
+                <!-- Email -->
+                <TextView
+                    android:id="@+id/tvEmailLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mail:"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="8dp"
+                    style="@style/Font_MontserratAlternates" />
+
+                <EditText
+                    android:id="@+id/etEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:hint="Enter your email"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:padding="16dp"
+                    android:background="@drawable/edit_text_background"
+                    android:textColor="@color/black"
+                    android:textColorHint="#9E9E9E"
+                    android:layout_marginBottom="16dp"
+                    style="@style/Font_MontserratAlternates" />
+
+                <!-- Пароль -->
+                <TextView
+                    android:id="@+id/tvPasswordLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Password:"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="8dp"
+                    style="@style/Font_MontserratAlternates" />
+
+                <EditText
+                    android:id="@+id/etPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:hint="Enter your password"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:padding="16dp"
+                    android:background="@drawable/edit_text_background"
+                    android:textColor="@color/black"
+                    android:textColorHint="#9E9E9E"
+                    android:layout_marginBottom="24dp"
+                    style="@style/Font_MontserratAlternates" />
+
+                <!-- Кнопка Register -->
+                <Button
+                    android:id="@+id/btnRegister"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Register"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:background="@drawable/login_button_background"
+                    android:paddingStart="32dp"
+                    android:paddingEnd="32dp"
+                    android:layout_gravity="center_horizontal"
+                    style="@style/Font_MontserratAlternates" />
+
+                <!-- Индикатор загрузки -->
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    android:layout_marginTop="16dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Кнопка Authorization всегда внизу -->
+        <Button
+            android:id="@+id/btnAuth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Authorization"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:layout_gravity="end"
+            android:layout_marginBottom="16dp"
+            style="@style/Widget.App.Button.Registration" />
+
+    </LinearLayout>
 </ScrollView>

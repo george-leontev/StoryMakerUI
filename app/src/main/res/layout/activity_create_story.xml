@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/white"
+    tools:context=".CreateStoryActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/header"
+            layout="@layout/fragment_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="24dp">
+
+                <TextView
+                    android:id="@+id/tvCreateTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Create Story"
+                    android:textSize="32sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    style="@style/Font_JostLight" />
+
+                <TextView
+                    android:id="@+id/tvCreateSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Start your interactive tale"
+                    android:textSize="16sp"
+                    android:textColor="#666666"
+                    android:layout_marginTop="4dp"
+                    style="@style/Font_MontserratAlternates" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/auth_form_background"
+                android:padding="24dp">
+
+                <TextView
+                    android:id="@+id/tvTitleLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Story Title:"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="8dp"
+                    style="@style/Font_MontserratAlternates" />
+
+                <EditText
+                    android:id="@+id/etTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:hint="Enter story title"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:padding="16dp"
+                    android:background="@drawable/edit_text_background"
+                    android:textColor="@color/black"
+                    android:textColorHint="#9E9E9E"
+                    android:layout_marginBottom="24dp"
+                    style="@style/Font_MontserratAlternates" />
+
+                <TextView
+                    android:id="@+id/tvDescriptionLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Description:"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="8dp"
+                    style="@style/Font_MontserratAlternates" />
+
+                <EditText
+                    android:id="@+id/etDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:hint="Brief description of your story"
+                    android:inputType="textMultiLine"
+                    android:padding="16dp"
+                    android:background="@drawable/edit_text_background"
+                    android:textColor="@color/black"
+                    android:textColorHint="#9E9E9E"
+                    android:gravity="top|start"
+                    android:scrollbars="vertical"
+                    android:layout_marginBottom="24dp"
+                    style="@style/Font_MontserratAlternates" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#E0E0E0"
+                    android:layout_marginBottom="24dp" />
+
+                <TextView
+                    android:id="@+id/tvChapterLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="First Chapter:"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    style="@style/Font_MontserratAlternates" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp">
+
+                    <ImageView
+                        android:id="@+id/ivBook"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/star"
+                        android:contentDescription="book"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="-12dp" />
+
+                </FrameLayout>
+
+                <EditText
+                    android:id="@+id/etChapterContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:hint="Write the beginning of your story..."
+                    android:inputType="textMultiLine"
+                    android:padding="16dp"
+                    android:background="@drawable/edit_text_background"
+                    android:textColor="@color/black"
+                    android:textColorHint="#9E9E9E"
+                    android:gravity="top|start"
+                    android:scrollbars="vertical"
+                    android:layout_marginBottom="24dp"
+                    style="@style/Font_MontserratAlternates" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#E0E0E0"
+                    android:layout_marginBottom="24dp" />
+
+                <TextView
+                    android:id="@+id/tvChoiceLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Reader's Choice:"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    style="@style/Font_MontserratAlternates" />
+
+                <TextView
+                    android:id="@+id/tvChoiceHint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Let readers decide what happens next"
+                    android:textSize="12sp"
+                    android:textColor="#666666"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="16dp"
+                    style="@style/Font_MontserratAlternates" />
+
+                <TextView
+                    android:id="@+id/tvOption1Label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Option 1:"
+                    android:textSize="14sp"
+                    android:textColor="#4D4D4D"
+                    android:layout_marginBottom="4dp"
+                    style="@style/Font_MontserratAlternates" />
+
+                <EditText
+                    android:id="@+id/etOption1"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:hint="What happens if they choose path A?"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:padding="16dp"
+                    android:background="@drawable/edit_text_background"
+                    android:textColor="@color/black"
+                    android:textColorHint="#9E9E9E"
+                    android:layout_marginBottom="16dp"
+                    style="@style/Font_MontserratAlternates" />
+
+                <TextView
+                    android:id="@+id/tvOption2Label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Option 2:"
+                    android:textSize="14sp"
+                    android:textColor="#4D4D4D"
+                    android:layout_marginBottom="4dp"
+                    style="@style/Font_MontserratAlternates" />
+
+                <EditText
+                    android:id="@+id/etOption2"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:hint="What happens if they choose path B?"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:padding="16dp"
+                    android:background="@drawable/edit_text_background"
+                    android:textColor="@color/black"
+                    android:textColorHint="#9E9E9E"
+                    android:layout_marginBottom="16dp"
+                    style="@style/Font_MontserratAlternates" />
+
+                <TextView
+                    android:id="@+id/tvTimerLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Voting Duration:"
+                    android:textSize="14sp"
+                    android:textColor="#4D4D4D"
+                    android:layout_marginBottom="4dp"
+                    style="@style/Font_MontserratAlternates" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="24dp">
+
+                    <EditText
+                        android:id="@+id/etTimerMinutes"
+                        android:layout_width="0dp"
+                        android:layout_height="56dp"
+                        android:layout_weight="1"
+                        android:hint="60"
+                        android:inputType="number"
+                        android:maxLines="1"
+                        android:padding="16dp"
+                        android:background="@drawable/edit_text_background"
+                        android:textColor="@color/black"
+                        android:textColorHint="#9E9E9E"
+                        android:gravity="center"
+                        style="@style/Font_MontserratAlternates" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="minutes"
+                        android:textSize="14sp"
+                        android:textColor="#666666"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="12dp"
+                        style="@style/Font_MontserratAlternates" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btnPublish"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:text="PUBLISH STORY"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:background="@drawable/login_button_background"
+                    style="@style/Font_MontserratAlternates" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    android:layout_marginTop="16dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

@@ -9,8 +9,8 @@
     <!-- Логотип слева -->
     <ImageView
         android:id="@+id/ivHeaderLogo"
-        android:layout_width="78dp"
-        android:layout_height="78dp"
+        android:layout_width="74dp"
+        android:layout_height="74dp"
         android:src="@drawable/app_icon"
         android:contentDescription="Logo" />
 
@@ -27,6 +27,7 @@
         <Button
             android:id="@+id/btnCreate"
             android:layout_width="wrap_content"
+
             android:layout_height="wrap_content"
             android:text="Create"
             android:textSize="14sp"

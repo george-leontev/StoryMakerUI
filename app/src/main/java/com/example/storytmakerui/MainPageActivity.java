@@ -1,9 +1,11 @@
 package com.example.storytmakerui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -29,6 +31,7 @@ public class MainPageActivity extends AppCompatActivity {
     private StoryAdapter storyAdapter;
     private final StoryRepository storyRepository = new StoryRepository();
     private final List<StoryResponse> storiesList = new ArrayList<>();
+    private Button btnCreate;
 
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
@@ -44,16 +47,24 @@ public class MainPageActivity extends AppCompatActivity {
         });
 
         initViews();
+        setupListeners();
         loadStories();
     }
 
     private void initViews() {
         recyclerViewStories = findViewById(R.id.recyclerViewStories);
         tvEmptyState = findViewById(R.id.tvEmptyState);
+        btnCreate = findViewById(R.id.btnCreate);
 
         storyAdapter = new StoryAdapter(storiesList);
         recyclerViewStories.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewStories.setAdapter(storyAdapter);
+    }
+
+    private void setupListeners() {
+        btnCreate.setOnClickListener(v -> {
+            startActivity(new Intent(MainPageActivity.this, CreateStoryActivity.class));
+        });
     }
 
     private void loadStories() {

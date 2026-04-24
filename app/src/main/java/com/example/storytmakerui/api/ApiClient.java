@@ -13,7 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import java.util.concurrent.TimeUnit;
 
 public class ApiClient {
-    private static final String BASE_URL = "http://10.0.2.2:5157/";
+    private static final String BASE_URL = "http://192.168.1.70:5157/";
 
     private static Retrofit retrofit;
     private static PreferenceManager preferenceManager;

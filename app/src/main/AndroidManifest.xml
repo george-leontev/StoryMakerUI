@@ -17,6 +17,9 @@
         android:theme="@style/Theme.StorytMakerUi"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".CreateStoryActivity"
+            android:exported="false" />
+        <activity
             android:name=".RegistrationActivity"
             android:exported="false" />
         <activity
