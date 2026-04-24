@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:padding="6dp">
+
+    <!-- Логотип слева -->
+    <ImageView
+        android:id="@+id/ivHeaderLogo"
+        android:layout_width="78dp"
+        android:layout_height="78dp"
+        android:src="@drawable/app_icon"
+        android:contentDescription="Logo" />
+
+    <!-- Кнопки справа -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:gravity="end"
+        android:layout_marginStart="16dp">
+
+        <!-- Кнопка Create -->
+        <Button
+            android:id="@+id/btnCreate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            android:layout_marginEnd="8dp"
+            style="@style/Widget.App.Button.Header.Default" />
+
+        <!-- Кнопка toRead -->
+        <Button
+            android:id="@+id/btnToRead"
+            style="@style/Widget.App.Button.Header.Default"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            android:text="toRead"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <!-- Кнопка Account -->
+        <Button
+            android:id="@+id/btnAccount"
+            style="@style/Widget.App.Button.Header.Black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="Account"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</LinearLayout>

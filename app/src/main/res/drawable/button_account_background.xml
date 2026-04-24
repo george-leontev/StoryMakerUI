@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Тень слой 3 — самый дальний -->
+    <item
+        android:left="6dp"
+        android:top="6dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#66999999" />
+            <corners android:radius="8dp" />
+        </shape>
+    </item>
+
+    <!-- Тень слой 2 — средний -->
+    <item
+        android:left="4dp"
+        android:top="4dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#99999999" />
+            <corners android:radius="8dp" />
+        </shape>
+    </item>
+
+    <!-- Тень слой 1 — ближний, самый тёмный -->
+    <item
+        android:left="2dp"
+        android:top="2dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#CC999999" />
+            <corners android:radius="8dp" />
+        </shape>
+    </item>
+
+    <!-- Основная кнопка -->
+    <item
+        android:left="0dp"
+        android:top="0dp"
+        android:right="6dp"
+        android:bottom="6dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/black" />
+            <corners android:radius="8dp" />
+        </shape>
+    </item>
+
+</layer-list>

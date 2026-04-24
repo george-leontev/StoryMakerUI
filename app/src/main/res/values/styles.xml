@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Font_JostLight">
+        <item name="android:fontFamily">@font/jost_light</item>
+    </style>
+
+    <style name="Font_Jomhuria">
+        <item name="android:fontFamily">@font/jomhuria_regular</item>
+    </style>
+
+    <style name="Font_MontserratAlternates">
+        <item name="android:fontFamily">@font/montserrat_alternates_regular</item>
+    </style>
+    
+    <!-- Стиль для кнопок хедера с шрифтом Montserrat Alternates -->
+    <style name="Widget.App.Button.Header.Default" parent="Widget.App.Button.Default">
+        <item name="android:fontFamily">@font/montserrat_alternates_regular</item>
+    </style>
+    
+    <style name="Widget.App.Button.Header.Black" parent="Widget.App.Button.Black">
+        <item name="android:fontFamily">@font/montserrat_alternates_regular</item>
+    </style>
+</resources>
