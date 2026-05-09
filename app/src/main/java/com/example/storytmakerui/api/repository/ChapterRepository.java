@@ -45,8 +45,4 @@ public class ChapterRepository {
             return Result.failure(e);
         }
     }
-
-    public Result<ChapterResponse> createChapter(int storyId, String content) {
-        return createChapter(storyId, content, null);
-    }
 }

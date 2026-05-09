@@ -53,6 +53,9 @@ dependencies {
     // Gson для JSON
     implementation(libs.gson)
     
+    // Glide для загрузки изображений
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

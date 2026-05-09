@@ -7,7 +7,18 @@
     android:orientation="vertical"
     android:padding="24dp">
 
-    <!-- Название истории цветом #CD4631 -->
+    <!-- Cover Image -->
+    <ImageView
+        android:id="@+id/ivCover"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:background="#F5F5F5"
+        android:contentDescription="Cover"
+        android:visibility="gone"
+        android:layout_marginBottom="12dp" />
+
+    <!-- Story title in color #CD4631 -->
     <TextView
         android:id="@+id/tvStoryTitle"
         android:layout_width="match_parent"
@@ -15,12 +26,12 @@
         android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="#CD4631"
-        android:text="Заголовок истории"
+        android:text="Story Title"
         android:maxLines="2"
         android:ellipsize="end"
         style="@style/Font_MontserratAlternates" />
 
-    <!-- Описание истории размером 12sp и цветом #4D4D4D -->
+    <!-- Story description in 12sp and color #4D4D4D -->
     <TextView
         android:id="@+id/tvStoryDescription"
         android:layout_width="match_parent"
@@ -28,12 +39,12 @@
         android:layout_marginTop="12dp"
         android:textSize="14sp"
         android:textColor="#4D4D4D"
-        android:text="Описание истории..."
+        android:text="Story description..."
         android:maxLines="3"
         android:ellipsize="end"
         style="@style/Font_MontserratAlternates" />
 
-    <!-- Разделитель -->
+    <!-- Separator -->
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -41,7 +52,7 @@
         android:layout_marginBottom="12dp"
         android:background="#E0E0E0" />
 
-    <!-- Автор -->
+    <!-- Author -->
     <TextView
         android:id="@+id/tvStoryAuthor"
         android:layout_width="match_parent"
@@ -49,9 +60,9 @@
         android:textSize="14sp"
         android:textColor="#333333"
         android:textStyle="bold"
-        android:text="Автор: ..." />
+        android:text="Author: ..." />
 
-    <!-- Рейтинг -->
+    <!-- Rating -->
     <TextView
         android:id="@+id/tvStoryRating"
         android:layout_width="match_parent"
@@ -59,9 +70,9 @@
         android:layout_marginTop="4dp"
         android:textSize="14sp"
         android:textColor="#333333"
-        android:text="Рейтинг: 0.0" />
+        android:text="Rating: 0.0" />
 
-    <!-- Количество глав -->
+    <!-- Chapter count -->
     <TextView
         android:id="@+id/tvStoryChapters"
         android:layout_width="match_parent"
@@ -69,9 +80,9 @@
         android:layout_marginTop="4dp"
         android:textSize="14sp"
         android:textColor="#333333"
-        android:text="Глав: 0" />
+        android:text="Chapters: 0" />
 
-    <!-- Дата создания -->
+    <!-- Creation date -->
     <TextView
         android:id="@+id/tvStoryCreatedAt"
         android:layout_width="match_parent"
@@ -79,6 +90,6 @@
         android:layout_marginTop="4dp"
         android:textSize="12sp"
         android:textColor="#666666"
-        android:text="Создано: ..." />
+        android:text="Created: ..." />
 
 </LinearLayout>

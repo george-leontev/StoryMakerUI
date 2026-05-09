@@ -11,6 +11,7 @@ public class StoryResponse {
     private double rating;
     private int chapterCount;
     private String createdAt;
+    private String coverImageUrl;
 
     public StoryResponse() {}
 
@@ -76,5 +77,13 @@ public class StoryResponse {
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getCoverImageUrl() {
+        return coverImageUrl;
+    }
+
+    public void setCoverImageUrl(String coverImageUrl) {
+        this.coverImageUrl = coverImageUrl;
     }
 }

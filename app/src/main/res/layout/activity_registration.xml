@@ -191,12 +191,11 @@
                     android:text="Register"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:textColor="@color/black"
-                    android:background="@drawable/login_button_background"
+                    android:textColor="@color/white"
                     android:paddingStart="32dp"
                     android:paddingEnd="32dp"
                     android:layout_gravity="center_horizontal"
-                    style="@style/Font_MontserratAlternates" />
+                    style="@style/Widget.App.Button.BlackSolid" />
 
                 <!-- Индикатор загрузки -->
                 <ProgressBar

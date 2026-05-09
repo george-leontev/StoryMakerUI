@@ -112,6 +112,53 @@
                     android:layout_marginBottom="24dp"
                     style="@style/Font_MontserratAlternates" />
 
+                <TextView
+                    android:id="@+id/tvCoverLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cover Image (Optional):"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="8dp"
+                    style="@style/Font_MontserratAlternates" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="24dp">
+
+                    <ImageView
+                        android:id="@+id/ivCoverPreview"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:scaleType="centerCrop"
+                        android:background="#F5F5F5"
+                        android:contentDescription="Cover preview"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/btnSelectCover"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:text="Select Cover Image"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:background="@drawable/edit_text_background"
+                        style="@style/Font_MontserratAlternates" />
+
+                    <TextView
+                        android:id="@+id/tvCoverHint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="JPG, PNG, WEBP (max 10MB)"
+                        android:textSize="12sp"
+                        android:textColor="#666666"
+                        android:layout_marginTop="4dp"
+                        style="@style/Font_MontserratAlternates" />
+                </LinearLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -281,9 +328,8 @@
                     android:text="PUBLISH STORY"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:textColor="@color/black"
-                    android:background="@drawable/login_button_background"
-                    style="@style/Font_MontserratAlternates" />
+                    android:textColor="@color/white"
+                    style="@style/Widget.App.Button.BlackSolid" />
 
                 <ProgressBar
                     android:id="@+id/progressBar"

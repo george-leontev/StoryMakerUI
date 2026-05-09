@@ -47,7 +47,7 @@
         android:id="@+id/tvEmptyState"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Нет историй для отображения"
+        android:text="No stories to display"
         android:textSize="16sp"
         android:textColor="#666666"
         android:visibility="gone"

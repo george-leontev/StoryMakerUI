@@ -1,16 +1,23 @@
 package com.example.storytmakerui;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -22,7 +29,16 @@ import com.example.storytmakerui.api.models.StoryResponse;
 import com.example.storytmakerui.api.repository.Result;
 import com.example.storytmakerui.api.repository.Repositories;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class CreateStoryActivity extends AppCompatActivity {
+
+    private static final int MAX_IMAGE_SIZE_BYTES = 10 * 1024 * 1024; // 10MB
 
     private EditText etTitle;
     private EditText etDescription;
@@ -31,9 +47,27 @@ public class CreateStoryActivity extends AppCompatActivity {
     private EditText etOption2;
     private EditText etTimerMinutes;
     private Button btnPublish;
+    private Button btnSelectCover;
+    private ImageView ivCoverPreview;
     private ProgressBar progressBar;
 
+    private Uri selectedImageUri;
+    private File cachedCoverFile;
+
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
+    private final ActivityResultLauncher<Intent> imagePickerLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    selectedImageUri = result.getData().getData();
+                    if (selectedImageUri != null) {
+                        previewSelectedImage();
+                    }
+                }
+            }
+    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,14 +92,79 @@ public class CreateStoryActivity extends AppCompatActivity {
         etOption2 = findViewById(R.id.etOption2);
         etTimerMinutes = findViewById(R.id.etTimerMinutes);
         btnPublish = findViewById(R.id.btnPublish);
+        btnSelectCover = findViewById(R.id.btnSelectCover);
+        ivCoverPreview = findViewById(R.id.ivCoverPreview);
         progressBar = findViewById(R.id.progressBar);
 
-        // Устанавливаем значение по умолчанию для таймера (60 минут)
         etTimerMinutes.setText("60");
     }
 
     private void setupListeners() {
+        btnSelectCover.setOnClickListener(v -> openImagePicker());
         btnPublish.setOnClickListener(v -> publishStory());
+    }
+
+    private void openImagePicker() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"image/jpeg", "image/png", "image/webp"});
+        imagePickerLauncher.launch(Intent.createChooser(intent, "Select Cover Image"));
+    }
+
+    private void previewSelectedImage() {
+        if (selectedImageUri == null) return;
+
+        try {
+            // Проверка размера файла
+            long fileSize = getContentResolver().openFileDescriptor(selectedImageUri, "r").getStatSize();
+            if (fileSize > MAX_IMAGE_SIZE_BYTES) {
+                Toast.makeText(this, "Размер изображения превышает 10MB", Toast.LENGTH_SHORT).show();
+                selectedImageUri = null;
+                ivCoverPreview.setVisibility(View.GONE);
+                return;
+            }
+
+            // Загрузка и отображение превью
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inSampleSize = 4; // уменьшаем в 4x для превью
+            Bitmap bitmap = BitmapFactory.decodeStream(
+                    getContentResolver().openInputStream(selectedImageUri), null, options);
+            ivCoverPreview.setImageBitmap(bitmap);
+            ivCoverPreview.setVisibility(View.VISIBLE);
+        } catch (IOException e) {
+            Toast.makeText(this, "Ошибка загрузки изображения", Toast.LENGTH_SHORT).show();
+            selectedImageUri = null;
+            ivCoverPreview.setVisibility(View.GONE);
+        }
+    }
+
+    private File saveSelectedImageToFile() throws IOException {
+        if (selectedImageUri == null) return null;
+
+        String fileName = UUID.randomUUID().toString() + getExtensionFromUri(selectedImageUri);
+        File cacheFile = new File(getCacheDir(), "covers/" + fileName);
+        cacheFile.getParentFile().mkdirs();
+
+        try (var inputStream = getContentResolver().openInputStream(selectedImageUri);
+             var outputStream = new FileOutputStream(cacheFile)) {
+            if (inputStream != null) {
+                byte[] buffer = new byte[4096];
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+            }
+        }
+
+        return cacheFile;
+    }
+
+    private String getExtensionFromUri(Uri uri) {
+        String mimeType = getContentResolver().getType(uri);
+        if (mimeType == null) return ".jpg";
+        if (mimeType.equals("image/png")) return ".png";
+        if (mimeType.equals("image/webp")) return ".webp";
+        return ".jpg";
     }
 
     private void publishStory() {
@@ -129,74 +228,93 @@ public class CreateStoryActivity extends AppCompatActivity {
         // Блокируем интерфейс
         setPublishing(true);
 
-        // Запускаем создание истории в фоновом потоке
-        new Thread(() -> {
+        final String fTitle = title;
+        final String fDesc = description;
+        final String fContent = chapterContent;
+        final String fOpt1 = option1;
+        final String fOpt2 = option2;
+        final int fDuration = duration;
+
+        executor.execute(() -> {
+            File coverFile = null;
+            
+            // Сохраняем обложку в файл, если выбрана
+            if (selectedImageUri != null) {
+                try {
+                    coverFile = saveSelectedImageToFile();
+                } catch (IOException e) {
+                    mainHandler.post(() -> {
+                        setPublishing(false);
+                        showError("Ошибка подготовки изображения: " + e.getMessage());
+                    });
+                    return;
+                }
+            }
+
             try {
-                // Шаг 1: Создаем историю
-                Result<StoryResponse> storyResult = Repositories.story.createStory(title, description);
+                // Шаг 1: создаём историю (всегда multipart, обложка опциональна)
+                Result<StoryResponse> storyResult = Repositories.story.createStory(fTitle, fDesc, coverFile);
 
-                mainHandler.post(() -> {
-                    if (storyResult.isFailure()) {
+                if (storyResult.isFailure()) {
+                    mainHandler.post(() -> {
+                        setPublishing(false);
                         showError("Ошибка создания истории: " + storyResult.getError().getMessage());
-                        return;
-                    }
+                    });
+                    return;
+                }
 
-                    StoryResponse story = storyResult.getData();
-                    int storyId = story.getId();
+                int storyId = storyResult.getData().getId();
 
-                    // Шаг 2: Создаем первую главу
-                    new Thread(() -> {
-                        Result<ChapterResponse> chapterResult = Repositories.chapter
-                                .createChapter(storyId, chapterContent, 1);
+                // Шаг 2: создаём главу
+                Result<ChapterResponse> chapterResult =
+                        Repositories.chapter.createChapter(storyId, fContent, 1);
 
-                        mainHandler.post(() -> {
-                            if (chapterResult.isFailure()) {
-                                showError("Ошибка создания главы: " + chapterResult.getError().getMessage());
-                                // Пытаемся удалить созданную историю
-                                cleanupStory(storyId);
-                                return;
-                            }
+                if (chapterResult.isFailure()) {
+                    Repositories.story.deleteStory(storyId); // откат
+                    mainHandler.post(() -> {
+                        setPublishing(false);
+                        showError("Ошибка создания главы: " + chapterResult.getError().getMessage());
+                    });
+                    return;
+                }
 
-                            ChapterResponse chapter = chapterResult.getData();
-                            int chapterId = chapter.getId();
+                int chapterId = chapterResult.getData().getId();
 
-                            // Шаг 3: Создаем выбор для главы
-                            new Thread(() -> {
-                                Result<ChoiceResponse> choiceResult = Repositories.choice
-                                        .createChoice(chapterId, option1, option2, duration);
+                // Шаг 3: создаём выбор
+                Result<ChoiceResponse> choiceResult =
+                        Repositories.choice.createChoice(chapterId, fOpt1, fOpt2, fDuration);
 
-                                mainHandler.post(() -> {
-                                    setPublishing(false);
+                if (choiceResult.isFailure()) {
+                    Repositories.story.deleteStory(storyId); // откат
+                    mainHandler.post(() -> {
+                        setPublishing(false);
+                        showError("Ошибка создания выбора: " + choiceResult.getError().getMessage());
+                    });
+                    return;
+                }
 
-                                    if (choiceResult.isFailure()) {
-                                        showError("Ошибка создания выбора: " + choiceResult.getError().getMessage());
-                                        // Пытаемся очистить созданные данные
-                                        cleanupStory(storyId);
-                                        return;
-                                    }
-
-                                    // Успех!
-                                    Toast.makeText(
-                                            CreateStoryActivity.this,
-                                            "История успешно опубликована!",
-                                            Toast.LENGTH_LONG
-                                    ).show();
-
-                                    // Возвращаемся на главный экран
-                                    startActivity(new Intent(CreateStoryActivity.this, MainPageActivity.class));
-                                    finish();
-                                });
-                            }).start();
-                        });
-                    }).start();
+                // Всё успешно
+                mainHandler.post(() -> {
+                    setPublishing(false);
+                    Toast.makeText(CreateStoryActivity.this,
+                            "История опубликована!", Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(CreateStoryActivity.this, MainPageActivity.class));
+                    finish();
                 });
+
             } catch (Exception e) {
                 mainHandler.post(() -> {
                     setPublishing(false);
                     showError("Непредвиденная ошибка: " + e.getMessage());
                 });
             }
-        }).start();
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        executor.shutdown();
     }
 
     private void cleanupStory(int storyId) {

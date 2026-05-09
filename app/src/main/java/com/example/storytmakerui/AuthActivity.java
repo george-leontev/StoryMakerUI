@@ -25,6 +25,7 @@ public class AuthActivity extends AppCompatActivity {
     private Button btnRegistration;
 
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
+
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
     @Override
@@ -63,11 +64,11 @@ public class AuthActivity extends AppCompatActivity {
                         startActivity(new Intent(AuthActivity.this, MainPageActivity.class));
                         finish();
                     } else {
-                        String errorMessage = result.getError() != null 
-                                ? result.getError().getMessage() 
+                        String errorMessage = result.getError() != null
+                                ? result.getError().getMessage()
                                 : "Неизвестная ошибка";
-                        Toast.makeText(AuthActivity.this, 
-                                "Ошибка входа: " + errorMessage, 
+                        Toast.makeText(AuthActivity.this,
+                                "Ошибка входа: " + errorMessage,
                                 Toast.LENGTH_SHORT).show();
                     }
 
