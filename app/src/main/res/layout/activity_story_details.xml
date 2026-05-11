@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/white"
+    tools:context=".StoryDetailsActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/header"
+            layout="@layout/fragment_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Заголовок страницы -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:id="@+id/tvDetailsTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Story Details"
+                    android:textSize="32sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    style="@style/Font_JostLight" />
+
+                <TextView
+                    android:id="@+id/tvDetailsSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dive into the tale"
+                    android:textSize="16sp"
+                    android:textColor="#666666"
+                    android:layout_marginTop="4dp"
+                    style="@style/Font_MontserratAlternates" />
+            </LinearLayout>
+
+            <!-- Контент истории -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Обложка -->
+                <ImageView
+                    android:id="@+id/ivCover"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:scaleType="centerCrop"
+                    android:background="#F5F5F5"
+                    android:contentDescription="Cover"
+                    android:visibility="gone"
+                    android:layout_marginBottom="16dp" />
+
+                <!-- Название -->
+                <TextView
+                    android:id="@+id/tvStoryTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="28sp"
+                    android:textStyle="bold"
+                    android:textColor="#CD4631"
+                    android:text="Story Title"
+                    style="@style/Font_MontserratAlternates" />
+
+                <!-- Автор -->
+                <TextView
+                    android:id="@+id/tvStoryAuthor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="#333333"
+                    android:text="Author: ..."
+                    style="@style/Font_MontserratAlternates" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="#E0E0E0" />
+
+                <!-- Описание -->
+                <TextView
+                    android:id="@+id/tvDescriptionLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Description:"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="8dp"
+                    style="@style/Font_MontserratAlternates" />
+
+                <TextView
+                    android:id="@+id/tvStoryDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="#4D4D4D"
+                    android:text="Story description..."
+                    android:lineSpacingExtra="4dp"
+                    style="@style/Font_MontserratAlternates" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="#E0E0E0" />
+
+                <!-- Мета-информация -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Chapters:"
+                        android:textSize="14sp"
+                        android:textColor="#4D4D4D"
+                        style="@style/Font_MontserratAlternates" />
+
+                    <TextView
+                        android:id="@+id/tvStoryChapters"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        style="@style/Font_MontserratAlternates" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Created:"
+                        android:textSize="14sp"
+                        android:textColor="#4D4D4D"
+                        style="@style/Font_MontserratAlternates" />
+
+                    <TextView
+                        android:id="@+id/tvStoryCreatedAt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="..."
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        style="@style/Font_MontserratAlternates" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="#E0E0E0" />
+
+                <!-- Блок рейтинга -->
+                <TextView
+                    android:id="@+id/tvRatingLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rating:"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="8dp"
+                    style="@style/Font_MontserratAlternates" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:id="@+id/tvAverageRating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0.0"
+                        android:textSize="32sp"
+                        android:textStyle="bold"
+                        android:textColor="#CD4631"
+                        style="@style/Font_MontserratAlternates" />
+
+                    <TextView
+                        android:id="@+id/tvVoteCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:text="(0 votes)"
+                        android:textSize="14sp"
+                        android:textColor="#666666"
+                        style="@style/Font_MontserratAlternates" />
+                </LinearLayout>
+
+                <!-- Голосование -->
+                <TextView
+                    android:id="@+id/tvVoteLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Your vote:"
+                    android:textSize="14sp"
+                    android:textColor="#4D4D4D"
+                    android:layout_marginBottom="8dp"
+                    style="@style/Font_MontserratAlternates" />
+
+                <LinearLayout
+                    android:id="@+id/llStars"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+
+                    <ImageView
+                        android:id="@+id/ivStar1"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:src="@drawable/star"
+                        android:contentDescription="star 1"
+                        android:padding="4dp"
+                        android:clickable="true"
+                        android:focusable="true" />
+
+                    <ImageView
+                        android:id="@+id/ivStar2"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:src="@drawable/star"
+                        android:contentDescription="star 2"
+                        android:padding="4dp"
+                        android:layout_marginStart="4dp"
+                        android:clickable="true"
+                        android:focusable="true" />
+
+                    <ImageView
+                        android:id="@+id/ivStar3"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:src="@drawable/star"
+                        android:contentDescription="star 3"
+                        android:padding="4dp"
+                        android:layout_marginStart="4dp"
+                        android:clickable="true"
+                        android:focusable="true" />
+
+                    <ImageView
+                        android:id="@+id/ivStar4"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:src="@drawable/star"
+                        android:contentDescription="star 4"
+                        android:padding="4dp"
+                        android:layout_marginStart="4dp"
+                        android:clickable="true"
+                        android:focusable="true" />
+
+                    <ImageView
+                        android:id="@+id/ivStar5"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:src="@drawable/star"
+                        android:contentDescription="star 5"
+                        android:padding="4dp"
+                        android:layout_marginStart="4dp"
+                        android:clickable="true"
+                        android:focusable="true" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvUserScore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tap a star to rate"
+                    android:textSize="12sp"
+                    android:textColor="#666666"
+                    android:layout_marginBottom="24dp"
+                    style="@style/Font_MontserratAlternates" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="24dp"
+                    android:background="#E0E0E0" />
+
+                <!-- Кнопка Read -->
+                <Button
+                    android:id="@+id/btnRead"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:text="READ"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    style="@style/Widget.App.Button.BlackSolid" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    android:layout_marginTop="16dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

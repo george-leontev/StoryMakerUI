@@ -1,5 +1,6 @@
 package com.example.storytmakerui;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,19 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.StoryViewHol
     public void onBindViewHolder(@NonNull StoryViewHolder holder, int position) {
         StoryResponse story = stories.get(position);
         holder.bind(story);
+        holder.itemView.setOnClickListener(v -> openDetails(v, story));
+    }
+
+    private void openDetails(View view, StoryResponse story) {
+        Intent intent = new Intent(view.getContext(), StoryDetailsActivity.class);
+        intent.putExtra(StoryDetailsActivity.EXTRA_STORY_ID, story.getId());
+        intent.putExtra(StoryDetailsActivity.EXTRA_STORY_TITLE, story.getTitle());
+        intent.putExtra(StoryDetailsActivity.EXTRA_STORY_DESCRIPTION, story.getDescription());
+        intent.putExtra(StoryDetailsActivity.EXTRA_STORY_AUTHOR, story.getAuthorUsername());
+        intent.putExtra(StoryDetailsActivity.EXTRA_STORY_COVER_URL, story.getCoverImageUrl());
+        intent.putExtra(StoryDetailsActivity.EXTRA_STORY_CHAPTER_COUNT, story.getChapterCount());
+        intent.putExtra(StoryDetailsActivity.EXTRA_STORY_CREATED_AT, story.getCreatedAt());
+        view.getContext().startActivity(intent);
     }
 
     @Override

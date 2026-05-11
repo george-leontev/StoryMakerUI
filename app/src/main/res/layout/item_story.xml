@@ -5,7 +5,10 @@
     android:layout_margin="8dp"
     android:background="@drawable/auth_form_background"
     android:orientation="vertical"
-    android:padding="24dp">
+    android:padding="24dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground">
 
     <!-- Cover Image -->
     <ImageView

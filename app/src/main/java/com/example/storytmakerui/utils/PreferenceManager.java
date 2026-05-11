@@ -7,6 +7,7 @@ public class PreferenceManager {
     private static final String PREFS_NAME = "story_maker_prefs";
     private static final String KEY_AUTH_TOKEN = "auth_token";
     private static final String KEY_USERNAME = "username";
+    private static final String KEY_VOTED_PREFIX = "voted_choice_";
 
     private final SharedPreferences prefs;
 
@@ -32,5 +33,13 @@ public class PreferenceManager {
 
     public String getUsername() {
         return prefs.getString(KEY_USERNAME, null);
+    }
+
+    public void saveVotedOption(int choiceId, int option) {
+        prefs.edit().putInt(KEY_VOTED_PREFIX + choiceId, option).apply();
+    }
+
+    public int getVotedOption(int choiceId) {
+        return prefs.getInt(KEY_VOTED_PREFIX + choiceId, -1);
     }
 }
