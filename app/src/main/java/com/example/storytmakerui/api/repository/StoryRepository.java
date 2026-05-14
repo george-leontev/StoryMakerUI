@@ -108,17 +108,16 @@ public class StoryRepository {
             RequestBody titleBody = RequestBody.create(MediaType.parse("text/plain"), title);
             RequestBody descBody = RequestBody.create(MediaType.parse("text/plain"), description);
 
-            retrofit2.Response<StoryResponse> response;
+            MultipartBody.Part coverPart = null;
             if (coverFile != null) {
                 String mime = getMediaType(coverFile.getName());
-                MultipartBody.Part coverPart = MultipartBody.Part.createFormData(
+                coverPart = MultipartBody.Part.createFormData(
                         "coverImage",
                         coverFile.getName(),
                         RequestBody.create(MediaType.parse(mime), coverFile));
-                response = storyService.updateStoryWithCover(id, titleBody, descBody, coverPart).execute();
-            } else {
-                response = storyService.updateStory(id, titleBody, descBody).execute();
             }
+
+            var response = storyService.updateStory(id, titleBody, descBody, coverPart).execute();
 
             if (response.isSuccessful() && response.body() != null) {
                 return Result.success(response.body());

@@ -32,6 +32,7 @@ public class MainPageActivity extends AppCompatActivity {
     private final StoryRepository storyRepository = new StoryRepository();
     private final List<StoryResponse> storiesList = new ArrayList<>();
     private Button btnCreate;
+    private Button btnAccount;
 
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
@@ -55,6 +56,7 @@ public class MainPageActivity extends AppCompatActivity {
         recyclerViewStories = findViewById(R.id.recyclerViewStories);
         tvEmptyState = findViewById(R.id.tvEmptyState);
         btnCreate = findViewById(R.id.btnCreate);
+        btnAccount = findViewById(R.id.btnAccount);
 
         storyAdapter = new StoryAdapter(storiesList);
         recyclerViewStories.setLayoutManager(new LinearLayoutManager(this));
@@ -64,6 +66,10 @@ public class MainPageActivity extends AppCompatActivity {
     private void setupListeners() {
         btnCreate.setOnClickListener(v -> {
             startActivity(new Intent(MainPageActivity.this, CreateStoryActivity.class));
+        });
+        
+        btnAccount.setOnClickListener(v -> {
+            startActivity(new Intent(MainPageActivity.this, ProfileActivity.class));
         });
     }
 

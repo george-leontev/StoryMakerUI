@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.storytmakerui.api.models.AuthResponse;
 import com.example.storytmakerui.api.repository.Result;
 import com.example.storytmakerui.api.repository.Repositories;
+import com.example.storytmakerui.utils.PreferenceManager;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -101,6 +102,10 @@ public class RegistrationActivity extends AppCompatActivity {
                 setRegistering(false);
 
                 if (result.isSuccess()) {
+                    // Сохраняем токен
+                    PreferenceManager prefManager = new PreferenceManager(RegistrationActivity.this);
+                    prefManager.saveAuthToken(result.getData().getToken());
+
                     Toast.makeText(
                             RegistrationActivity.this,
                             "Регистрация успешна!",

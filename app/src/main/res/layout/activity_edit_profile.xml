@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/white"
+    tools:context=".EditProfileActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Header с кнопкой назад -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="6dp"
+            android:background="@color/white">
+
+            <ImageView
+                android:id="@+id/btnBack"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@android:drawable/ic_menu_revert"
+                android:contentDescription="Back"
+                android:padding="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackgroundBorderless" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="Edit Profile"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                style="@style/Font_JostLight" />
+
+            <Button
+                android:id="@+id/btnSave"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="Save"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_marginEnd="8dp"
+                style="@style/Widget.App.Button.BlackSolid" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E0E0E0" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Секция заголовка -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Edit Profile"
+                    android:textSize="32sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    style="@style/Font_JostLight" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Update your information"
+                    android:textSize="16sp"
+                    android:textColor="#666666"
+                    android:layout_marginTop="4dp"
+                    style="@style/Font_MontserratAlternates" />
+            </LinearLayout>
+
+            <!-- Аватар -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_marginBottom="32dp">
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/ivAvatarPreview"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:scaleType="centerCrop"
+                        android:background="#E0E0E0"
+                        android:clipToOutline="true" />
+
+                    <ImageView
+                        android:id="@+id/btnChangeAvatar"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="bottom|end"
+                        android:src="@android:drawable/ic_menu_camera"
+                        android:background="@drawable/avatar_edit_button"
+                        android:padding="8dp"
+                        android:contentDescription="Change Avatar" />
+                </FrameLayout>
+
+                <Button
+                    android:id="@+id/btnSelectAvatar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:text="Change Avatar"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/edit_text_background"
+                    style="@style/Font_MontserratAlternates" />
+            </LinearLayout>
+
+            <!-- Разделитель -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#E0E0E0"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Имя пользователя -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Username:"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="8dp"
+                    style="@style/Font_MontserratAlternates" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="68dp">
+
+                    <ImageView
+                        android:layout_width="68dp"
+                        android:layout_height="68dp"
+                        android:src="@drawable/star"
+                        android:contentDescription="decor"
+                        android:layout_gravity="end|top" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Your unique name"
+                        android:textSize="12sp"
+                        android:textColor="#999999"
+                        style="@style/Font_MontserratAlternates"
+                        android:layout_gravity="start|bottom"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginBottom="8dp" />
+                </FrameLayout>
+
+                <EditText
+                    android:id="@+id/etUsername"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:hint="Enter username"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:padding="16dp"
+                    android:background="@drawable/edit_text_background"
+                    android:textColor="@color/black"
+                    android:textColorHint="#9E9E9E"
+                    style="@style/Font_MontserratAlternates" />
+            </LinearLayout>
+
+            <!-- Email -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Email:"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="8dp"
+                    style="@style/Font_MontserratAlternates" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="68dp">
+
+                    <ImageView
+                        android:layout_width="68dp"
+                        android:layout_height="68dp"
+                        android:src="@drawable/star"
+                        android:contentDescription="decor"
+                        android:layout_gravity="end|top" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Your contact email"
+                        android:textSize="12sp"
+                        android:textColor="#999999"
+                        style="@style/Font_MontserratAlternates"
+                        android:layout_gravity="start|bottom"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginBottom="8dp" />
+                </FrameLayout>
+
+                <EditText
+                    android:id="@+id/etEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:hint="Enter email"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:padding="16dp"
+                    android:background="@drawable/edit_text_background"
+                    android:textColor="@color/black"
+                    android:textColorHint="#9E9E9E"
+                    style="@style/Font_MontserratAlternates" />
+            </LinearLayout>
+
+            <!-- Пароль (опционально) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Change Password (Optional):"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="8dp"
+                    style="@style/Font_MontserratAlternates" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Leave blank to keep current password"
+                    android:textSize="12sp"
+                    android:textColor="#999999"
+                    android:layout_marginBottom="16dp"
+                    style="@style/Font_MontserratAlternates" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Current Password:"
+                    android:textSize="14sp"
+                    android:textColor="#4D4D4D"
+                    android:layout_marginBottom="4dp"
+                    style="@style/Font_MontserratAlternates" />
+
+                <EditText
+                    android:id="@+id/etCurrentPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:hint="Enter current password"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:padding="16dp"
+                    android:background="@drawable/edit_text_background"
+                    android:textColor="@color/black"
+                    android:textColorHint="#9E9E9E"
+                    android:layout_marginBottom="16dp"
+                    style="@style/Font_MontserratAlternates" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New Password:"
+                    android:textSize="14sp"
+                    android:textColor="#4D4D4D"
+                    android:layout_marginBottom="4dp"
+                    style="@style/Font_MontserratAlternates" />
+
+                <EditText
+                    android:id="@+id/etNewPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:hint="Enter new password"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:padding="16dp"
+                    android:background="@drawable/edit_text_background"
+                    android:textColor="@color/black"
+                    android:textColorHint="#9E9E9E"
+                    android:layout_marginBottom="16dp"
+                    style="@style/Font_MontserratAlternates" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Confirm New Password:"
+                    android:textSize="14sp"
+                    android:textColor="#4D4D4D"
+                    android:layout_marginBottom="4dp"
+                    style="@style/Font_MontserratAlternates" />
+
+                <EditText
+                    android:id="@+id/etConfirmPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:hint="Confirm new password"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:padding="16dp"
+                    android:background="@drawable/edit_text_background"
+                    android:textColor="@color/black"
+                    android:textColorHint="#9E9E9E"
+                    style="@style/Font_MontserratAlternates" />
+            </LinearLayout>
+
+            <!-- Прогресс бар -->
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:layout_marginTop="24dp" />
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

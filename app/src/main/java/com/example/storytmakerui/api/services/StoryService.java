@@ -45,20 +45,12 @@ public interface StoryService {
     Call<StoryResponse> createStoryWithCover(
             @Part("title") RequestBody title,
             @Part("description") RequestBody description,
-            @Part("coverImage") MultipartBody.Part coverImage
+            @Part MultipartBody.Part coverImage
     );
 
     @Multipart
     @PUT("api/story/{id}")
     Call<StoryResponse> updateStory(
-            @Path("id") int id,
-            @Part("title") RequestBody title,
-            @Part("description") RequestBody description
-    );
-
-    @Multipart
-    @PUT("api/story/{id}")
-    Call<StoryResponse> updateStoryWithCover(
             @Path("id") int id,
             @Part("title") RequestBody title,
             @Part("description") RequestBody description,

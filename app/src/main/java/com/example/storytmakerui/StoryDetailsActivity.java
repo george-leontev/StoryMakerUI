@@ -22,6 +22,7 @@ import com.bumptech.glide.Glide;
 import com.example.storytmakerui.api.models.RatingResponse;
 import com.example.storytmakerui.api.repository.Repositories;
 import com.example.storytmakerui.api.repository.Result;
+import com.example.storytmakerui.utils.PreferenceManager;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -40,6 +41,7 @@ public class StoryDetailsActivity extends AppCompatActivity {
     public static final String EXTRA_STORY_COVER_URL = "extra_story_cover_url";
     public static final String EXTRA_STORY_CHAPTER_COUNT = "extra_story_chapter_count";
     public static final String EXTRA_STORY_CREATED_AT = "extra_story_created_at";
+    public static final String EXTRA_STORY_AUTHOR_ID = "extra_story_author_id";
 
     private static final int STAR_ACTIVE_COLOR = 0xFFCD4631;
     private static final int STAR_INACTIVE_COLOR = 0xFFCCCCCC;
@@ -54,10 +56,12 @@ public class StoryDetailsActivity extends AppCompatActivity {
     private TextView tvVoteCount;
     private TextView tvUserScore;
     private Button btnRead;
+    private Button btnAddChapter;
     private ProgressBar progressBar;
     private ImageView[] stars;
 
     private int storyId = -1;
+    private int currentUserId = -1;
     private Integer currentUserScore;
 
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -91,6 +95,7 @@ public class StoryDetailsActivity extends AppCompatActivity {
         tvVoteCount = findViewById(R.id.tvVoteCount);
         tvUserScore = findViewById(R.id.tvUserScore);
         btnRead = findViewById(R.id.btnRead);
+        btnAddChapter = findViewById(R.id.btnAddChapter);
         progressBar = findViewById(R.id.progressBar);
 
         stars = new ImageView[]{
@@ -104,6 +109,13 @@ public class StoryDetailsActivity extends AppCompatActivity {
 
     private void bindStoryFromIntent() {
         storyId = getIntent().getIntExtra(EXTRA_STORY_ID, -1);
+        android.util.Log.d("StoryDetails", "bindStoryFromIntent: storyId=" + storyId);
+        
+        // Получаем userId из JWT токена через PreferenceManager
+        PreferenceManager prefManager = new PreferenceManager(this);
+        String authToken = prefManager.getAuthToken();
+        currentUserId = extractUserIdFromJwt(authToken);
+        android.util.Log.d("StoryDetails", "bindStoryFromIntent: currentUserId=" + currentUserId);
 
         String title = getIntent().getStringExtra(EXTRA_STORY_TITLE);
         String description = getIntent().getStringExtra(EXTRA_STORY_DESCRIPTION);
@@ -111,6 +123,9 @@ public class StoryDetailsActivity extends AppCompatActivity {
         String coverUrl = getIntent().getStringExtra(EXTRA_STORY_COVER_URL);
         int chapterCount = getIntent().getIntExtra(EXTRA_STORY_CHAPTER_COUNT, 0);
         String createdAt = getIntent().getStringExtra(EXTRA_STORY_CREATED_AT);
+        int authorId = getIntent().getIntExtra(EXTRA_STORY_AUTHOR_ID, -1);
+        
+        android.util.Log.d("StoryDetails", "bindStoryFromIntent: authorId from intent=" + authorId);
 
         tvStoryTitle.setText(title != null ? title : "Untitled");
         tvStoryAuthor.setText("Author: " + (author != null ? author : "Unknown"));
@@ -119,7 +134,7 @@ public class StoryDetailsActivity extends AppCompatActivity {
         tvStoryCreatedAt.setText(formatDate(createdAt));
 
         if (coverUrl != null && !coverUrl.isEmpty()) {
-            String fullUrl = "http://10.0.2.2:5157" + coverUrl;
+            String fullUrl = "http://192.168.1.70:5157" + coverUrl;
             Glide.with(this)
                     .load(fullUrl)
                     .placeholder(android.R.drawable.ic_menu_gallery)
@@ -142,6 +157,14 @@ public class StoryDetailsActivity extends AppCompatActivity {
             intent.putExtra(ReaderActivity.EXTRA_STORY_ID, storyId);
             intent.putExtra(ReaderActivity.EXTRA_STORY_TITLE,
                     getIntent().getStringExtra(EXTRA_STORY_TITLE));
+            intent.putExtra("extra_story_author_id",
+                    getIntent().getIntExtra(EXTRA_STORY_AUTHOR_ID, -1));
+            startActivity(intent);
+        });
+
+        btnAddChapter.setOnClickListener(v -> {
+            Intent intent = new Intent(this, CreateChapterActivity.class);
+            intent.putExtra(CreateChapterActivity.EXTRA_STORY_ID, storyId);
             startActivity(intent);
         });
     }
@@ -202,6 +225,21 @@ public class StoryDetailsActivity extends AppCompatActivity {
             updateStars(0);
             tvUserScore.setText("Tap a star to rate");
         }
+
+        // Проверка авторства и показ кнопки "Новая глава"
+        checkAuthorship();
+    }
+
+    private void checkAuthorship() {
+        int storyAuthorId = getIntent().getIntExtra(EXTRA_STORY_AUTHOR_ID, -1);
+        android.util.Log.d("StoryDetails", "checkAuthorship: storyAuthorId=" + storyAuthorId + ", currentUserId=" + currentUserId);
+        if (storyAuthorId == currentUserId && currentUserId > 0) {
+            btnAddChapter.setVisibility(View.VISIBLE);
+            android.util.Log.d("StoryDetails", "Showing Add Chapter button");
+        } else {
+            btnAddChapter.setVisibility(View.GONE);
+            android.util.Log.d("StoryDetails", "Hiding Add Chapter button - not author");
+        }
     }
 
     private void updateStars(int score) {
@@ -242,6 +280,83 @@ public class StoryDetailsActivity extends AppCompatActivity {
         }
 
         return rawDate;
+    }
+
+    private int extractUserIdFromJwt(String token) {
+        android.util.Log.d("StoryDetails", "extractUserIdFromJwt: token=" + (token != null ? token.substring(0, Math.min(50, token.length())) + "..." : "null"));
+        if (token == null || token.trim().isEmpty()) {
+            android.util.Log.d("StoryDetails", "extractUserIdFromJwt: token is null or empty");
+            return -1;
+        }
+        
+        // Убираем префикс "Bearer " если он есть
+        String jwt = token;
+        if (token.startsWith("Bearer ")) {
+            jwt = token.substring(7);
+        }
+        
+        android.util.Log.d("StoryDetails", "extractUserIdFromJwt: jwt=" + jwt.substring(0, Math.min(30, jwt.length())) + "...");
+        String[] parts = jwt.split("\\.");
+        if (parts.length != 3) {
+            android.util.Log.d("StoryDetails", "extractUserIdFromJwt: invalid jwt parts count=" + parts.length);
+            return -1;
+        }
+        
+        try {
+            String payload = new String(android.util.Base64.decode(parts[1], android.util.Base64.URL_SAFE));
+            android.util.Log.d("StoryDetails", "extractUserIdFromJwt: payload=" + payload);
+            
+            // .NET использует ClaimTypes.NameIdentifier = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
+            String claimKey = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier";
+            String searchPattern = "\"" + claimKey + "\"";
+            
+            int claimStart = payload.indexOf(searchPattern);
+            if (claimStart != -1) {
+                // Находим двоеточие после ключа
+                int colonPos = payload.indexOf(':', claimStart + searchPattern.length());
+                if (colonPos != -1) {
+                    // Пропускаем пробелы после двоеточия
+                    int valueStart = colonPos + 1;
+                    while (valueStart < payload.length() && (payload.charAt(valueStart) == ' ' || payload.charAt(valueStart) == '\t')) {
+                        valueStart++;
+                    }
+                    
+                    // Проверяем, начинается ли значение с кавычки (string) или цифры (number)
+                    if (valueStart < payload.length()) {
+                        char firstChar = payload.charAt(valueStart);
+                        String userIdStr;
+                        
+                        if (firstChar == '"') {
+                            // Значение в кавычках (string)
+                            int quoteEnd = payload.indexOf('"', valueStart + 1);
+                            if (quoteEnd != -1) {
+                                userIdStr = payload.substring(valueStart + 1, quoteEnd);
+                            } else {
+                                return -1;
+                            }
+                        } else if (Character.isDigit(firstChar) || firstChar == '-') {
+                            // Числовое значение
+                            int valueEnd = valueStart;
+                            while (valueEnd < payload.length() && (Character.isDigit(payload.charAt(valueEnd)) || payload.charAt(valueEnd) == '-')) {
+                                valueEnd++;
+                            }
+                            userIdStr = payload.substring(valueStart, valueEnd);
+                        } else {
+                            return -1;
+                        }
+                        
+                        android.util.Log.d("StoryDetails", "extractUserIdFromJwt: found userId=" + userIdStr);
+                        return Integer.parseInt(userIdStr.trim());
+                    }
+                }
+            }
+            
+            android.util.Log.d("StoryDetails", "extractUserIdFromJwt: no valid claim found");
+            return -1;
+        } catch (Exception e) {
+            android.util.Log.e("StoryDetails", "extractUserIdFromJwt: error=" + e.getMessage(), e);
+            return -1;
+        }
     }
 
     @Override

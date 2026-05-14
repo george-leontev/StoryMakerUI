@@ -11,8 +11,9 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface ChoiceService {
+    // GET /api/chapters/{chapterId}/choices - получение выбора по chapterId
     @GET("api/chapters/{chapterId}/choices")
-    Call<ChoiceResponse> getChoice(@Path("chapterId") int chapterId);
+    Call<ChoiceResponse> getChoiceByChapterId(@Path("chapterId") int chapterId);
 
     @POST("api/chapters/{chapterId}/choices")
     Call<ChoiceResponse> createChoice(
@@ -25,5 +26,12 @@ public interface ChoiceService {
             @Path("chapterId") int chapterId,
             @Path("choiceId") int choiceId,
             @Body VoteRequest request
+    );
+
+    // Метод для автора: получить результаты голосования (видит голоса всегда)
+    @GET("api/chapters/{chapterId}/choices/{choiceId}/author")
+    Call<ChoiceResponse> getChoiceForAuthor(
+            @Path("chapterId") int chapterId,
+            @Path("choiceId") int choiceId
     );
 }

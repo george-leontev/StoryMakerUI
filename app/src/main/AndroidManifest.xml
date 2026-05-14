@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <!-- Разрешение на доступ к интернету -->
-    <uses-permission android:name="android.permission.INTERNET" /> <!-- Разрешение на доступ к сети -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Разрешение на доступ к сети -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
@@ -16,6 +17,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StorytMakerUi"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditProfileActivity"
+            android:exported="false"
+            android:label="Edit Profile"
+            android:theme="@style/Theme.StorytMakerUi" />
+        <activity
+            android:name=".CreateChapterActivity"
+            android:exported="false"
+            android:label="Create Chapter"
+            android:theme="@style/Theme.StorytMakerUi" />
         <activity
             android:name=".StoryDetailsActivity"
             android:exported="false" />
@@ -36,10 +50,8 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
-
 </manifest>

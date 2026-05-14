@@ -31,16 +31,16 @@ public class ChapterRepository {
         return getChapters(storyId, 1, 20);
     }
 
-    public Result<ChapterResponse> createChapter(int storyId, String content, Integer sequenceNumber) {
+    public Result<ChapterResponse> createChapter(int storyId, String title, String content, Integer sequenceNumber) {
         try {
-            CreateChapterRequest request = new CreateChapterRequest(content, sequenceNumber);
+            CreateChapterRequest request = new CreateChapterRequest(title, content, sequenceNumber);
             var response = chapterService.createChapter(storyId, request).execute();
             
             if (response.isSuccessful() && response.body() != null) {
                 return Result.success(response.body());
-            } else {
-                return Result.failure(new Exception("Ошибка создания главы: " + response.code()));
             }
+            String errorBody = response.errorBody() != null ? response.errorBody().string() : "No error details";
+            return Result.failure(new Exception("HTTP " + response.code() + ": " + errorBody));
         } catch (Exception e) {
             return Result.failure(e);
         }

@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.storytmakerui.api.models.AuthResponse;
 import com.example.storytmakerui.api.repository.Repositories;
 import com.example.storytmakerui.api.repository.Result;
+import com.example.storytmakerui.utils.PreferenceManager;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -60,6 +61,10 @@ public class AuthActivity extends AppCompatActivity {
                 // Возвращаемся в главный поток для обновления UI
                 mainHandler.post(() -> {
                     if (result.isSuccess()) {
+                        // Сохраняем токен
+                        PreferenceManager prefManager = new PreferenceManager(AuthActivity.this);
+                        prefManager.saveAuthToken(result.getData().getToken());
+
                         // Переход на главный экран
                         startActivity(new Intent(AuthActivity.this, MainPageActivity.class));
                         finish();

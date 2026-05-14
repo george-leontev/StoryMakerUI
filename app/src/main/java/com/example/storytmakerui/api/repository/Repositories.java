@@ -26,6 +26,16 @@ public class Repositories {
     public static final ChoiceRepository choice = new ChoiceRepository();
     public static final RatingRepository rating = new RatingRepository();
     public static final CommentRepository comment = new CommentRepository();
+    public static final UserRepository user = new UserRepository();
+
+    // Convenience methods for user operations
+    public static Result<com.example.storytmakerui.api.models.ProfileResponse> updateProfile(String username, String email) {
+        return user.updateProfile(username, email);
+    }
+    
+    public static Result<com.example.storytmakerui.api.models.ProfileResponse> changePassword(String currentPassword, String newPassword) {
+        return user.changePassword(currentPassword, newPassword);
+    }
 
     private Repositories() {
         // Утилитный класс, нельзя создавать экземпляры

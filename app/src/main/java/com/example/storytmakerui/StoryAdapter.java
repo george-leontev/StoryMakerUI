@@ -45,6 +45,7 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.StoryViewHol
     }
 
     private void openDetails(View view, StoryResponse story) {
+        android.util.Log.d("StoryAdapter", "openDetails: storyId=" + story.getId() + ", authorId=" + story.getAuthorId() + ", title=" + story.getTitle());
         Intent intent = new Intent(view.getContext(), StoryDetailsActivity.class);
         intent.putExtra(StoryDetailsActivity.EXTRA_STORY_ID, story.getId());
         intent.putExtra(StoryDetailsActivity.EXTRA_STORY_TITLE, story.getTitle());
@@ -53,6 +54,7 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.StoryViewHol
         intent.putExtra(StoryDetailsActivity.EXTRA_STORY_COVER_URL, story.getCoverImageUrl());
         intent.putExtra(StoryDetailsActivity.EXTRA_STORY_CHAPTER_COUNT, story.getChapterCount());
         intent.putExtra(StoryDetailsActivity.EXTRA_STORY_CREATED_AT, story.getCreatedAt());
+        intent.putExtra(StoryDetailsActivity.EXTRA_STORY_AUTHOR_ID, story.getAuthorId());
         view.getContext().startActivity(intent);
     }
 
@@ -86,7 +88,7 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.StoryViewHol
             String coverUrl = story.getCoverImageUrl();
             if (coverUrl != null && !coverUrl.isEmpty()) {
                 // Полная URL для загрузки изображения
-                String fullUrl = "http://10.0.2.2:5157" + coverUrl;
+                String fullUrl = "http://192.168.1.70:5157" + coverUrl;
                 Glide.with(ivCover.getContext())
                         .load(fullUrl)
                         .placeholder(android.R.drawable.ic_menu_gallery)

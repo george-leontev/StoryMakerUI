@@ -252,22 +252,33 @@ public class CreateStoryActivity extends AppCompatActivity {
             }
 
             try {
+                android.util.Log.d("CreateStory", "=== START CREATE STORY ===");
+                android.util.Log.d("CreateStory", "title: " + fTitle);
+                android.util.Log.d("CreateStory", "description length: " + fDesc.length());
+                android.util.Log.d("CreateStory", "coverFile: " + (coverFile != null ? coverFile.getName() : "null"));
+                
                 // Шаг 1: создаём историю (всегда multipart, обложка опциональна)
                 Result<StoryResponse> storyResult = Repositories.story.createStory(fTitle, fDesc, coverFile);
 
+                android.util.Log.d("CreateStory", "Story result: isSuccess=" + storyResult.isSuccess());
                 if (storyResult.isFailure()) {
+                    android.util.Log.e("CreateStory", "Story creation FAILED: " + storyResult.getError());
                     mainHandler.post(() -> {
                         setPublishing(false);
-                        showError("Ошибка создания истории: " + storyResult.getError().getMessage());
+                        String error = storyResult.getError() != null
+                                ? storyResult.getError().getMessage()
+                                : "Неизвестная ошибка";
+                        showError("Ошибка создания истории: " + error);
                     });
                     return;
                 }
 
                 int storyId = storyResult.getData().getId();
+                android.util.Log.d("CreateStory", "Story CREATED successfully! storyId=" + storyId);
 
-                // Шаг 2: создаём главу
+                // Шаг 2: создаём главу с title и content
                 Result<ChapterResponse> chapterResult =
-                        Repositories.chapter.createChapter(storyId, fContent, 1);
+                        Repositories.chapter.createChapter(storyId, fTitle + " - Chapter 1", fContent, 1);
 
                 if (chapterResult.isFailure()) {
                     Repositories.story.deleteStory(storyId); // откат

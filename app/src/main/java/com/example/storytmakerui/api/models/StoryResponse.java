@@ -6,12 +6,12 @@ public class StoryResponse {
     private int id;
     private String title;
     private String description;
+    private String coverImageUrl;
     private int authorId;
     private String authorUsername;
     private double rating;
     private int chapterCount;
     private String createdAt;
-    private String coverImageUrl;
 
     public StoryResponse() {}
 

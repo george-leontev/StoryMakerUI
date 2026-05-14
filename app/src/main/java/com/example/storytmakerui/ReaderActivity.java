@@ -25,6 +25,7 @@ import com.example.storytmakerui.api.models.ChoiceResponse;
 import com.example.storytmakerui.api.repository.Repositories;
 import com.example.storytmakerui.api.repository.Result;
 import com.example.storytmakerui.utils.PreferenceManager;
+import android.util.JsonReader;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -59,11 +60,14 @@ public class ReaderActivity extends AppCompatActivity {
 
     private int storyId;
     private String storyTitle;
+    private int storyAuthorId;
     private List<ChapterResponse> chapters;
     private int currentIndex = 0;
     private ChoiceResponse currentChoice;
+    private int currentChapterId;
 
     private PreferenceManager preferenceManager;
+    private int currentUserId;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
@@ -80,11 +84,23 @@ public class ReaderActivity extends AppCompatActivity {
 
         storyId = getIntent().getIntExtra(EXTRA_STORY_ID, -1);
         storyTitle = getIntent().getStringExtra(EXTRA_STORY_TITLE);
+        storyAuthorId = getIntent().getIntExtra("extra_story_author_id", -1);
         preferenceManager = new PreferenceManager(this);
+        
+        // Получаем текущего пользователя из JWT токена
 
         initViews();
         setupListeners();
         loadChapters();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Перезагружаем главы при возвращении (например, после создания новой)
+        if (storyId > 0) {
+            loadChapters();
+        }
     }
 
     private void initViews() {
@@ -117,11 +133,30 @@ public class ReaderActivity extends AppCompatActivity {
     }
 
     private void loadChapters() {
+        android.util.Log.d("ReaderActivity", "=== LOAD CHAPTERS START ===");
+        android.util.Log.d("ReaderActivity", "storyId=" + storyId);
         setLoading(true);
         executor.execute(() -> {
             Result<com.example.storytmakerui.api.models.PagedResponse<ChapterResponse>> result =
                     Repositories.chapter.getChapters(storyId, 1, 100);
 
+            android.util.Log.d("ReaderActivity", "API response: isSuccess=" + result.isSuccess());
+            if (result.isSuccess()) {
+                var data = result.getData();
+                android.util.Log.d("ReaderActivity", "totalCount=" + data.getTotalCount());
+                android.util.Log.d("ReaderActivity", "items.size()=" + (data.getItems() != null ? data.getItems().size() : 0));
+                if (data.getItems() != null) {
+                    for (int i = 0; i < data.getItems().size(); i++) {
+                        var ch = data.getItems().get(i);
+                        android.util.Log.d("ReaderActivity", "  Chapter[" + i + "]: id=" + ch.getId() + 
+                                ", seq=" + ch.getSequenceNumber() + 
+                                ", hasChoice=" + ch.hasChoice());
+                    }
+                }
+            } else {
+                android.util.Log.e("ReaderActivity", "API FAILED: " + result.getError());
+            }
+            
             mainHandler.post(() -> {
                 setLoading(false);
                 if (result.isSuccess() && result.getData() != null) {
@@ -129,12 +164,15 @@ public class ReaderActivity extends AppCompatActivity {
                     if (items != null && !items.isEmpty()) {
                         items.sort((a, b) -> a.getSequenceNumber() - b.getSequenceNumber());
                         chapters = items;
+                        android.util.Log.d("ReaderActivity", "Chapters loaded: " + chapters.size());
                         showChapter(0);
                     } else {
+                        android.util.Log.w("ReaderActivity", "No chapters found for storyId=" + storyId);
                         tvChapterContent.setText("This story has no chapters yet.");
                     }
                 } else {
                     String msg = result.getError() != null ? result.getError().getMessage() : "Unknown error";
+                    android.util.Log.e("ReaderActivity", "Failed to load chapters: " + msg);
                     tvChapterContent.setText("Failed to load: " + msg);
                 }
             });
@@ -171,8 +209,27 @@ public class ReaderActivity extends AppCompatActivity {
     }
 
     private void loadChoice(int chapterId) {
+        currentChapterId = chapterId;
         executor.execute(() -> {
-            Result<ChoiceResponse> result = Repositories.choice.getChoice(chapterId);
+            // Если автор истории — получаем результаты голосования
+            Result<ChoiceResponse> result;
+            if (storyAuthorId == currentUserId && currentUserId > 0) {
+                // Сначала получаем выбор через public endpoint, чтобы узнать ID выбора
+                Result<ChoiceResponse> publicResult = Repositories.choice.getChoice(chapterId);
+                if (publicResult.isFailure()) {
+                    mainHandler.post(() -> {
+                        String err = publicResult.getError() != null ? publicResult.getError().getMessage() : "Failed to load choice";
+                        Toast.makeText(this, "Choice error: " + err, Toast.LENGTH_LONG).show();
+                    });
+                    return;
+                }
+                int choiceId = publicResult.getData().getId();
+                // Теперь получаем результаты для автора
+                result = Repositories.choice.getChoiceForAuthor(chapterId, choiceId);
+            } else {
+                result = Repositories.choice.getChoice(chapterId);
+            }
+            
             mainHandler.post(() -> {
                 if (result.isSuccess() && result.getData() != null) {
                     currentChoice = result.getData();
@@ -353,6 +410,83 @@ public class ReaderActivity extends AppCompatActivity {
             } catch (ParseException ignored) {}
         }
         return rawDate;
+    }
+
+    private int extractUserIdFromJwt(String token) {
+        android.util.Log.d("ReaderActivity", "extractUserIdFromJwt: token=" + (token != null ? token.substring(0, Math.min(50, token.length())) + "..." : "null"));
+        if (token == null || token.trim().isEmpty()) {
+            android.util.Log.d("ReaderActivity", "extractUserIdFromJwt: token is null or empty");
+            return -1;
+        }
+        
+        // Убираем префикс "Bearer " если он есть
+        String jwt = token;
+        if (token.startsWith("Bearer ")) {
+            jwt = token.substring(7);
+        }
+        
+        android.util.Log.d("ReaderActivity", "extractUserIdFromJwt: jwt=" + jwt.substring(0, Math.min(30, jwt.length())) + "...");
+        String[] parts = jwt.split("\\.");
+        if (parts.length != 3) {
+            android.util.Log.d("ReaderActivity", "extractUserIdFromJwt: invalid jwt parts count=" + parts.length);
+            return -1;
+        }
+        
+        try {
+            String payload = new String(android.util.Base64.decode(parts[1], android.util.Base64.URL_SAFE));
+            android.util.Log.d("ReaderActivity", "extractUserIdFromJwt: payload=" + payload);
+            
+            // .NET использует ClaimTypes.NameIdentifier = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
+            String claimKey = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier";
+            String searchPattern = "\"" + claimKey + "\"";
+            
+            int claimStart = payload.indexOf(searchPattern);
+            if (claimStart != -1) {
+                // Находим двоеточие после ключа
+                int colonPos = payload.indexOf(':', claimStart + searchPattern.length());
+                if (colonPos != -1) {
+                    // Пропускаем пробелы после двоеточия
+                    int valueStart = colonPos + 1;
+                    while (valueStart < payload.length() && (payload.charAt(valueStart) == ' ' || payload.charAt(valueStart) == '\t')) {
+                        valueStart++;
+                    }
+                    
+                    // Проверяем, начинается ли значение с кавычки (string) или цифры (number)
+                    if (valueStart < payload.length()) {
+                        char firstChar = payload.charAt(valueStart);
+                        String userIdStr;
+                        
+                        if (firstChar == '"') {
+                            // Значение в кавычках (string)
+                            int quoteEnd = payload.indexOf('"', valueStart + 1);
+                            if (quoteEnd != -1) {
+                                userIdStr = payload.substring(valueStart + 1, quoteEnd);
+                            } else {
+                                return -1;
+                            }
+                        } else if (Character.isDigit(firstChar) || firstChar == '-') {
+                            // Числовое значение
+                            int valueEnd = valueStart;
+                            while (valueEnd < payload.length() && (Character.isDigit(payload.charAt(valueEnd)) || payload.charAt(valueEnd) == '-')) {
+                                valueEnd++;
+                            }
+                            userIdStr = payload.substring(valueStart, valueEnd);
+                        } else {
+                            return -1;
+                        }
+                        
+                        android.util.Log.d("ReaderActivity", "extractUserIdFromJwt: found userId=" + userIdStr);
+                        return Integer.parseInt(userIdStr.trim());
+                    }
+                }
+            }
+            
+            android.util.Log.d("ReaderActivity", "extractUserIdFromJwt: no valid claim found");
+            return -1;
+        } catch (Exception e) {
+            android.util.Log.e("ReaderActivity", "extractUserIdFromJwt: error=" + e.getMessage(), e);
+            return -1;
+        }
     }
 
     @Override
