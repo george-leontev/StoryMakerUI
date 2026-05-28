@@ -65,14 +65,18 @@ public class ProfileActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private RecyclerView recyclerViewMyStories;
     private RecyclerView recyclerViewMyVotes;
+    private RecyclerView recyclerViewAuthorVotes;
     private TextView tvNoStories;
     private TextView tvNoVotes;
+    private TextView tvNoAuthorVotes;
 
     private Uri selectedImageUri;
     private List<StoryResponse> storiesList = new ArrayList<>();
     private List<VoteHistoryResponse> votesList = new ArrayList<>();
+    private List<VoteHistoryResponse> authorVotesList = new ArrayList<>();
     private StoryAdapter storiesAdapter;
     private VoteHistoryAdapter votesAdapter;
+    private AuthorVoteAdapter authorVotesAdapter;
     private ProfileResponse currentUser;
 
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -121,8 +125,10 @@ public class ProfileActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         recyclerViewMyStories = findViewById(R.id.recyclerViewMyStories);
         recyclerViewMyVotes = findViewById(R.id.recyclerViewMyVotes);
+        recyclerViewAuthorVotes = findViewById(R.id.recyclerViewAuthorVotes);
         tvNoStories = findViewById(R.id.tvNoStories);
         tvNoVotes = findViewById(R.id.tvNoVotes);
+        tvNoAuthorVotes = findViewById(R.id.tvNoAuthorVotes);
 
         storiesAdapter = new StoryAdapter(storiesList);
         recyclerViewMyStories.setLayoutManager(new LinearLayoutManager(this));
@@ -131,6 +137,10 @@ public class ProfileActivity extends AppCompatActivity {
         votesAdapter = new VoteHistoryAdapter(votesList);
         recyclerViewMyVotes.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewMyVotes.setAdapter(votesAdapter);
+
+        authorVotesAdapter = new AuthorVoteAdapter();
+        recyclerViewAuthorVotes.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewAuthorVotes.setAdapter(authorVotesAdapter);
     }
 
     private void setupListeners() {
@@ -162,6 +172,7 @@ public class ProfileActivity extends AppCompatActivity {
             Result<ProfileResponse> profileResult = Repositories.user.getProfile();
             Result<com.example.storytmakerui.api.models.PagedResponse<StoryResponse>> storiesResult = Repositories.user.getMyStories();
             Result<com.example.storytmakerui.api.models.PagedResponse<VoteHistoryResponse>> votesResult = Repositories.user.getMyVotes();
+            Result<com.example.storytmakerui.api.models.PagedResponse<VoteHistoryResponse>> authorVotesResult = Repositories.user.getAuthorVotes();
 
             mainHandler.post(() -> {
                 setLoading(false);
@@ -204,6 +215,33 @@ public class ProfileActivity extends AppCompatActivity {
                         votesAdapter.notifyDataSetChanged();
                     }
                 }
+
+                if (authorVotesResult.isSuccess()) {
+                    com.example.storytmakerui.api.models.PagedResponse<VoteHistoryResponse> authorVotesData = authorVotesResult.getData();
+                    if (authorVotesData != null && authorVotesData.getItems() != null) {
+                        authorVotesList.clear();
+                        authorVotesList.addAll(authorVotesData.getItems());
+                        authorVotesAdapter.setVotesList(authorVotesList);
+                        android.util.Log.d("ProfileActivity", "Author votes loaded: " + authorVotesList.size());
+                        tvNoAuthorVotes.setVisibility(authorVotesList.isEmpty() ? View.VISIBLE : View.GONE);
+                        recyclerViewAuthorVotes.setVisibility(authorVotesList.isEmpty() ? View.GONE : View.VISIBLE);
+                    } else {
+                        android.util.Log.d("ProfileActivity", "Author votes data or items is null");
+                        authorVotesList.clear();
+                        authorVotesAdapter.setVotesList(authorVotesList);
+                        tvNoAuthorVotes.setVisibility(View.VISIBLE);
+                        recyclerViewAuthorVotes.setVisibility(View.GONE);
+                    }
+                } else {
+                    String errorMsg = authorVotesResult.getError() != null 
+                        ? authorVotesResult.getError().getMessage() 
+                        : "Unknown error";
+                    android.util.Log.e("ProfileActivity", "Failed to load author votes: " + errorMsg);
+                    authorVotesList.clear();
+                    authorVotesAdapter.setVotesList(authorVotesList);
+                    tvNoAuthorVotes.setVisibility(View.VISIBLE);
+                    recyclerViewAuthorVotes.setVisibility(View.GONE);
+                }
             });
         });
     }
@@ -214,7 +252,7 @@ public class ProfileActivity extends AppCompatActivity {
         tvMemberSince.setText("Член с " + formatDate(user.getCreatedAt()));
 
         if (user.getAvatarImageUrl() != null && !user.getAvatarImageUrl().isEmpty()) {
-            String fullUrl = "http://192.168.1.70:5157" + user.getAvatarImageUrl();
+            String fullUrl = "http://192.168.1.72:5157" + user.getAvatarImageUrl();
             Glide.with(this)
                     .load(fullUrl)
                     .placeholder(android.R.drawable.ic_menu_gallery)
@@ -321,5 +359,12 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         executor.shutdown();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Перезагружаем данные при возвращении на экран профиля
+        loadProfile();
     }
 }

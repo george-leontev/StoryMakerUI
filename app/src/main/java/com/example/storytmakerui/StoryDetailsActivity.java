@@ -134,7 +134,7 @@ public class StoryDetailsActivity extends AppCompatActivity {
         tvStoryCreatedAt.setText(formatDate(createdAt));
 
         if (coverUrl != null && !coverUrl.isEmpty()) {
-            String fullUrl = "http://192.168.1.70:5157" + coverUrl;
+            String fullUrl = "http://192.168.1.72:5157" + coverUrl;
             Glide.with(this)
                     .load(fullUrl)
                     .placeholder(android.R.drawable.ic_menu_gallery)

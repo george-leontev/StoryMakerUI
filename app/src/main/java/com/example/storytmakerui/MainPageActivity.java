@@ -7,6 +7,7 @@ import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +33,7 @@ public class MainPageActivity extends AppCompatActivity {
     private final StoryRepository storyRepository = new StoryRepository();
     private final List<StoryResponse> storiesList = new ArrayList<>();
     private Button btnCreate;
+    private Button btnToRead;
     private Button btnAccount;
 
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
@@ -56,6 +58,7 @@ public class MainPageActivity extends AppCompatActivity {
         recyclerViewStories = findViewById(R.id.recyclerViewStories);
         tvEmptyState = findViewById(R.id.tvEmptyState);
         btnCreate = findViewById(R.id.btnCreate);
+        btnToRead = findViewById(R.id.btnToRead);
         btnAccount = findViewById(R.id.btnAccount);
 
         storyAdapter = new StoryAdapter(storiesList);
@@ -66,6 +69,11 @@ public class MainPageActivity extends AppCompatActivity {
     private void setupListeners() {
         btnCreate.setOnClickListener(v -> {
             startActivity(new Intent(MainPageActivity.this, CreateStoryActivity.class));
+        });
+        
+        btnToRead.setOnClickListener(v -> {
+            // toRead перекидывает на главную страницу
+            Toast.makeText(this, "Раздел 'toRead' пока недоступен", Toast.LENGTH_SHORT).show();
         });
         
         btnAccount.setOnClickListener(v -> {

@@ -44,4 +44,10 @@ public interface UserService {
             @Query("page") int page,
             @Query("pageSize") int pageSize
     );
+
+    @GET("api/user/author-votes")
+    Call<PagedResponse<VoteHistoryResponse>> getAuthorVotes(
+            @Query("page") int page,
+            @Query("pageSize") int pageSize
+    );
 }

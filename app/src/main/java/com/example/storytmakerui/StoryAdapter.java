@@ -88,7 +88,7 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.StoryViewHol
             String coverUrl = story.getCoverImageUrl();
             if (coverUrl != null && !coverUrl.isEmpty()) {
                 // Полная URL для загрузки изображения
-                String fullUrl = "http://192.168.1.70:5157" + coverUrl;
+                String fullUrl = "http://192.168.1.72:5157" + coverUrl;
                 Glide.with(ivCover.getContext())
                         .load(fullUrl)
                         .placeholder(android.R.drawable.ic_menu_gallery)

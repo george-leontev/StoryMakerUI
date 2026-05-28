@@ -136,6 +136,25 @@ public class UserRepository {
         return getMyVotes(1, 20);
     }
 
+    public Result<com.example.storytmakerui.api.models.PagedResponse<VoteHistoryResponse>> getAuthorVotes(int page, int pageSize) {
+        try {
+            Response<com.example.storytmakerui.api.models.PagedResponse<VoteHistoryResponse>> response = userService.getAuthorVotes(page, pageSize).execute();
+            
+            if (response.isSuccessful() && response.body() != null) {
+                return Result.success(response.body());
+            } else {
+                String errorBody = response.errorBody() != null ? response.errorBody().string() : "No details";
+                return Result.failure(new Exception("Ошибка получения голосований автора: " + response.code() + " - " + errorBody));
+            }
+        } catch (Exception e) {
+            return Result.failure(e);
+        }
+    }
+
+    public Result<com.example.storytmakerui.api.models.PagedResponse<VoteHistoryResponse>> getAuthorVotes() {
+        return getAuthorVotes(1, 20);
+    }
+
     private String guessImageMime(String fileName) {
         if (fileName == null) return "application/octet-stream";
         String lower = fileName.toLowerCase();
