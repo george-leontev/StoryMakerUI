@@ -22,6 +22,7 @@ import com.bumptech.glide.Glide;
 import com.example.storytmakerui.api.models.RatingResponse;
 import com.example.storytmakerui.api.repository.Repositories;
 import com.example.storytmakerui.api.repository.Result;
+import com.example.storytmakerui.utils.HeaderNav;
 import com.example.storytmakerui.utils.PreferenceManager;
 
 import java.text.ParseException;
@@ -56,6 +57,7 @@ public class StoryDetailsActivity extends AppCompatActivity {
     private TextView tvVoteCount;
     private TextView tvUserScore;
     private Button btnRead;
+    private Button btnComments;
     private Button btnAddChapter;
     private ProgressBar progressBar;
     private ImageView[] stars;
@@ -81,6 +83,7 @@ public class StoryDetailsActivity extends AppCompatActivity {
         initViews();
         bindStoryFromIntent();
         setupListeners();
+        HeaderNav.setup(this, HeaderNav.Tab.TO_READ);
         loadRating();
     }
 
@@ -95,6 +98,7 @@ public class StoryDetailsActivity extends AppCompatActivity {
         tvVoteCount = findViewById(R.id.tvVoteCount);
         tvUserScore = findViewById(R.id.tvUserScore);
         btnRead = findViewById(R.id.btnRead);
+        btnComments = findViewById(R.id.btnComments);
         btnAddChapter = findViewById(R.id.btnAddChapter);
         progressBar = findViewById(R.id.progressBar);
 
@@ -134,7 +138,7 @@ public class StoryDetailsActivity extends AppCompatActivity {
         tvStoryCreatedAt.setText(formatDate(createdAt));
 
         if (coverUrl != null && !coverUrl.isEmpty()) {
-            String fullUrl = "http://192.168.1.72:5157" + coverUrl;
+            String fullUrl = com.example.storytmakerui.api.ApiClient.getImageUrl(coverUrl);
             Glide.with(this)
                     .load(fullUrl)
                     .placeholder(android.R.drawable.ic_menu_gallery)
@@ -159,6 +163,12 @@ public class StoryDetailsActivity extends AppCompatActivity {
                     getIntent().getStringExtra(EXTRA_STORY_TITLE));
             intent.putExtra("extra_story_author_id",
                     getIntent().getIntExtra(EXTRA_STORY_AUTHOR_ID, -1));
+            startActivity(intent);
+        });
+
+        btnComments.setOnClickListener(v -> {
+            Intent intent = new Intent(this, CommentsActivity.class);
+            intent.putExtra(CommentsActivity.EXTRA_STORY_ID, storyId);
             startActivity(intent);
         });
 

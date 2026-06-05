@@ -1,13 +1,10 @@
 package com.example.storytmakerui;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +18,7 @@ import com.example.storytmakerui.api.models.PagedResponse;
 import com.example.storytmakerui.api.models.StoryResponse;
 import com.example.storytmakerui.api.repository.Result;
 import com.example.storytmakerui.api.repository.StoryRepository;
+import com.example.storytmakerui.utils.HeaderNav;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +30,6 @@ public class MainPageActivity extends AppCompatActivity {
     private StoryAdapter storyAdapter;
     private final StoryRepository storyRepository = new StoryRepository();
     private final List<StoryResponse> storiesList = new ArrayList<>();
-    private Button btnCreate;
-    private Button btnToRead;
-    private Button btnAccount;
 
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
@@ -57,9 +52,6 @@ public class MainPageActivity extends AppCompatActivity {
     private void initViews() {
         recyclerViewStories = findViewById(R.id.recyclerViewStories);
         tvEmptyState = findViewById(R.id.tvEmptyState);
-        btnCreate = findViewById(R.id.btnCreate);
-        btnToRead = findViewById(R.id.btnToRead);
-        btnAccount = findViewById(R.id.btnAccount);
 
         storyAdapter = new StoryAdapter(storiesList);
         recyclerViewStories.setLayoutManager(new LinearLayoutManager(this));
@@ -67,18 +59,8 @@ public class MainPageActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
-        btnCreate.setOnClickListener(v -> {
-            startActivity(new Intent(MainPageActivity.this, CreateStoryActivity.class));
-        });
-        
-        btnToRead.setOnClickListener(v -> {
-            // toRead перекидывает на главную страницу
-            Toast.makeText(this, "Раздел 'toRead' пока недоступен", Toast.LENGTH_SHORT).show();
-        });
-        
-        btnAccount.setOnClickListener(v -> {
-            startActivity(new Intent(MainPageActivity.this, ProfileActivity.class));
-        });
+        // Главная лента = вкладка "toRead", она же активна при входе
+        HeaderNav.setup(this, HeaderNav.Tab.TO_READ);
     }
 
     private void loadStories() {

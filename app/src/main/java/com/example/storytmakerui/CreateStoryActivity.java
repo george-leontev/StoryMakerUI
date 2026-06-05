@@ -28,6 +28,7 @@ import com.example.storytmakerui.api.models.ChoiceResponse;
 import com.example.storytmakerui.api.models.StoryResponse;
 import com.example.storytmakerui.api.repository.Result;
 import com.example.storytmakerui.api.repository.Repositories;
+import com.example.storytmakerui.utils.HeaderNav;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -82,6 +83,7 @@ public class CreateStoryActivity extends AppCompatActivity {
 
         initViews();
         setupListeners();
+        HeaderNav.setup(this, HeaderNav.Tab.CREATE);
     }
 
     private void initViews() {

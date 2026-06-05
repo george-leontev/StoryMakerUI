@@ -1,19 +1,26 @@
 package com.example.storytmakerui.api.models;
 
+import com.google.gson.annotations.SerializedName;
+
+/**
+ * Тело POST /api/stories/{storyId}/comments.
+ * Сервер ожидает поле "text" (камелкейс), Trim делает сам.
+ */
 public class CreateCommentRequest {
-    private String content;
+    @SerializedName("text")
+    private String text;
 
     public CreateCommentRequest() {}
 
-    public CreateCommentRequest(String content) {
-        this.content = content;
+    public CreateCommentRequest(String text) {
+        this.text = text;
     }
 
-    public String getContent() {
-        return content;
+    public String getText() {
+        return text;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setText(String text) {
+        this.text = text;
     }
 }

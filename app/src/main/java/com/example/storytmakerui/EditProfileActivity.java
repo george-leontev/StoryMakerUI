@@ -121,7 +121,7 @@ public class EditProfileActivity extends AppCompatActivity {
                     etEmail.setText(currentEmail);
                     
                     if (user.getAvatarImageUrl() != null && !user.getAvatarImageUrl().isEmpty()) {
-                        String fullUrl = "http://192.168.1.72:5157" + user.getAvatarImageUrl();
+                        String fullUrl = com.example.storytmakerui.api.ApiClient.getImageUrl(user.getAvatarImageUrl());
                         com.bumptech.glide.Glide.with(this)
                                 .load(fullUrl)
                                 .placeholder(android.R.drawable.ic_menu_gallery)
@@ -163,7 +163,7 @@ public class EditProfileActivity extends AppCompatActivity {
                     showLoading(false);
                     if (result.isSuccess()) {
                         ProfileResponse user = result.getData();
-                        String fullUrl = "http://192.168.1.72:5157" + user.getAvatarImageUrl();
+                        String fullUrl = com.example.storytmakerui.api.ApiClient.getImageUrl(user.getAvatarImageUrl());
                         com.bumptech.glide.Glide.with(this)
                                 .load(fullUrl)
                                 .into(ivAvatarPreview);

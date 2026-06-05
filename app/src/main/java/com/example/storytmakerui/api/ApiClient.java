@@ -13,7 +13,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import java.util.concurrent.TimeUnit;
 
 public class ApiClient {
-    private static final String BASE_URL = "http://192.168.1.72:5157/";
+    public static final String HOST = "http://10.0.2.2:5157";
+    private static final String BASE_URL = HOST + "/";
+
+    public static String getImageUrl(String relativePath) {
+        if (relativePath == null || relativePath.isEmpty()) {
+            return null;
+        }
+        return HOST + relativePath;
+    }
 
     private static Retrofit retrofit;
     private static PreferenceManager preferenceManager;

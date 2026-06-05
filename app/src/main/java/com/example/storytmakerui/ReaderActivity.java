@@ -86,8 +86,9 @@ public class ReaderActivity extends AppCompatActivity {
         storyTitle = getIntent().getStringExtra(EXTRA_STORY_TITLE);
         storyAuthorId = getIntent().getIntExtra("extra_story_author_id", -1);
         preferenceManager = new PreferenceManager(this);
-        
+
         // Получаем текущего пользователя из JWT токена
+        currentUserId = extractUserIdFromJwt(preferenceManager.getAuthToken());
 
         initViews();
         setupListeners();

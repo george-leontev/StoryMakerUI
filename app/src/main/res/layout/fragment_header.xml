@@ -23,6 +23,19 @@
         android:gravity="end"
         android:layout_marginStart="16dp">
 
+        <!-- Кнопка toRead -->
+        <Button
+            android:id="@+id/btnToRead"
+            style="@style/Widget.App.Button.Header.Default"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            android:text="toRead"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
         <!-- Кнопка Create -->
         <Button
             android:id="@+id/btnCreate"
@@ -36,19 +49,6 @@
             android:paddingEnd="6dp"
             android:layout_marginEnd="8dp"
             style="@style/Widget.App.Button.Header.Default" />
-
-        <!-- Кнопка toRead -->
-        <Button
-            android:id="@+id/btnToRead"
-            style="@style/Widget.App.Button.Header.Default"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:paddingStart="6dp"
-            android:paddingEnd="6dp"
-            android:text="toRead"
-            android:textSize="14sp"
-            android:textStyle="bold" />
 
         <!-- Кнопка Account -->
         <Button

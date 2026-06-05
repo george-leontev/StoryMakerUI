@@ -1,12 +1,27 @@
 package com.example.storytmakerui.api.models;
 
+import com.google.gson.annotations.SerializedName;
+
+/**
+ * Ответ API на комментарий истории.
+ * Контракт сервера (camelCase): id, storyId, userUsername, text, timestamp (UTC ISO-8601 с Z).
+ * userId/аватар сервер НЕ возвращает — авторство определяем сравнением username.
+ */
 public class CommentResponse {
+    @SerializedName("id")
     private int id;
+
+    @SerializedName("storyId")
     private int storyId;
-    private int userId;
+
+    @SerializedName("userUsername")
     private String username;
-    private String content;
-    private String createdAt;
+
+    @SerializedName("text")
+    private String text;
+
+    @SerializedName("timestamp")
+    private String timestamp;
 
     public CommentResponse() {}
 
@@ -26,14 +41,6 @@ public class CommentResponse {
         this.storyId = storyId;
     }
 
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
     public String getUsername() {
         return username;
     }
@@ -42,19 +49,19 @@ public class CommentResponse {
         this.username = username;
     }
 
-    public String getContent() {
-        return content;
+    public String getText() {
+        return text;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setText(String text) {
+        this.text = text;
     }
 
-    public String getCreatedAt() {
-        return createdAt;
+    public String getTimestamp() {
+        return timestamp;
     }
 
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
     }
 }
